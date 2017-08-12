@@ -17,19 +17,22 @@ win_height = 500
 #cell size in pixels
 cell_size = 10
 
-btn = tkinter.Button(root, text="Step", width = 30, height = 3)
-btn.pack()
-
 #resize window 
 win_width = win_width - win_width % cell_size
 win_height = win_height - win_height % cell_size
 
-#set size of window
-root.geometry("{}x{}".format(win_width, win_height))
-
 #create and pack(show) canvas
 canv = tkinter.Canvas(root, width = win_width, height = win_height, bg = "white")
-canv.pack()
+canv.grid(row = 0, column = 0, columnspan = 2)
+
+#buttons
+btn = tkinter.Button(root, text="Step", width = 40, height = 3)
+btn.grid(row = 1, column = 0)
+btn1 = tkinter.Button(root, text="Clear", width = 40, height = 3)
+btn1.grid(row = 1, column = 1)
+
+#set size of window
+root.geometry("{}x{}".format(win_width, win_height+60))
 
 #create cells
 x_cells = win_width // cell_size
@@ -37,6 +40,7 @@ y_cells = win_height // cell_size
 
 #drow cells
 cell_matrix = []
+
 for i in range(x_cells):
     cell_list = []
     for j in range(y_cells):
@@ -49,7 +53,10 @@ for i in range(x_cells):
 def draw_cell(e):
     x_cord = e.x // cell_size
     y_cord = e.y // cell_size
-    canv.itemconfig(cell_matrix[x_cord][y_cord], state = tkinter.NORMAL, tags =("visible", "0"))
+    if canv.gettags(cell_matrix[x_cord][y_cord])[0] == "visible":
+        canv.itemconfig(cell_matrix[x_cord][y_cord], state = tkinter.HIDDEN, tags =("hidden", "0"))    
+    else:
+        canv.itemconfig(cell_matrix[x_cord][y_cord], state = tkinter.NORMAL, tags =("visible", "0"))
    
 #checking for conditions
 def check():
@@ -78,7 +85,12 @@ def redraw():
                 canv.itemconfig(cell_matrix[i][j], state = tkinter.NORMAL, tags = ("visible","0"))
             if canv.gettags(cell_matrix[i][j])[1] == "to_hidden":
                 canv.itemconfig(cell_matrix[i][j], state = tkinter.HIDDEN, tags = ("hidden","0"))
-            
+                
+def clear():
+    for i in range(x_cells):
+        for j in range(y_cells):
+                canv.itemconfig(cell_matrix[i][j], state = tkinter.HIDDEN, tags = ("hidden","0"))
+           
 def step():
     check()
     redraw()
@@ -87,5 +99,6 @@ def step():
 #mousebinding
 canv.bind("<Button-1>", draw_cell)
 #create button
+btn1.config(command = clear)
 btn.config(command = step)
 root.mainloop()
