@@ -1,17 +1,10 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Aug 11 21:18:55 2017
-
-@author: Vlad
-"""
 
 import os
 import matplotlib.pyplot as plt
 from mutagen.mp3 import MP3
 from mutagen.mp4 import MP4
 from mutagen.flac import FLAC
-music =  "E:\Музыка".replace("\\","/")
-
 
 
 def length(music):
@@ -33,11 +26,9 @@ def length(music):
     return (("MP3","MP4","FLAC"),(length_mp3,length_mp4,length_flac))
 
 
-length = length(music)
-
 def sub_plot(length):
     plt.clf()
-    """Take tuple and for each element create figure of different colors"""
+    """Take tuple and for each element create figure of different colors and plot it on one picture then save it in rep"""
     colors = ["blue","red","green","orange"]
     names = length[0]
     count = length[1]
@@ -81,9 +72,10 @@ def sub_plot(length):
         plt.savefig('plots.png', dpi = 600)
         plt.show()
         plt.close()
-
+        
 
 def stacked_plot(length):
+    """ Make stacked plot of differen formats of music then show it and save"""
     plt.clf()
     colors_set = ["blue","red","green","yellow","orange"]
     names = length[0]
@@ -111,13 +103,3 @@ def stacked_plot(length):
     plt.savefig('stacked_plot.png', dpi = 600)
     plt.show() 
     plt.close()
-
-
-
-sub_plot(length)
-stacked_plot(length)
-
-
-          
-
-
